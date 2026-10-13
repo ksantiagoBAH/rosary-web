@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { readSaved, save } from './storage';
 import type { NarrationRecording } from './data/narration';
 import type { NarrationTiming } from './domain/narration-progress';
 import { narrationPhrases, phraseAtWord, wordAtTime } from './domain/narration-progress';
@@ -9,7 +10,7 @@ export function Player({ recording, timing, text, title, auto, advance, previous
   const active = useRef<HTMLSpanElement>(null);
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [rate, setRate] = useState(1);
+  const [rate, setRate] = useState(() => readSaved('playback-rate', value => typeof value === 'number' && [0.85, 1, 1.15, 1.25, 2].includes(value) ? value : 1, 1));
   const [error, setError] = useState('');
   const [follow, setFollow] = useState(true);
   const phrases = timing ? narrationPhrases(timing.transcript, timing.words) : [];
@@ -49,7 +50,7 @@ export function Player({ recording, timing, text, title, auto, advance, previous
         {next && <button className="icon-button" aria-label="Next prayer" onClick={next}>→</button>}
         <button className="quiet" onClick={() => { if (audio.current) { audio.current.load(); setTime(0); setError(''); setPlaying(false); } }}>Replay</button>
         <span className="time">{clock(time)} / {clock(duration)}</span>
-        <label className="speed">Speed <select value={rate} onChange={e => setRate(Number(e.target.value))}><option value="0.85">0.85×</option><option value="1">1×</option><option value="1.15">1.15×</option></select></label>
+        <label className="speed">Speed <select value={rate} onChange={e => { const value = Number(e.target.value); setRate(value); save('playback-rate', value); }}><option value="0.85">0.85×</option><option value="1">1×</option><option value="1.15">1.15×</option><option value="1.25">1.25×</option><option value="2">2×</option></select></label>
       </div>
       <label className="sr-only" htmlFor="audio-progress">Recording position</label><input id="audio-progress" type="range" min="0" max={duration || 1} step="0.1" value={Math.min(time, duration || 1)} onChange={e => { if (audio.current) audio.current.currentTime = Number(e.target.value); }}/>
       <p className="audio-note">{error || (recording ? `${recording.narrator} · AI-generated narration` : 'Read this prayer at your own pace.')}</p>

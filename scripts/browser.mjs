@@ -29,6 +29,10 @@ for (const engine of ['chromium','webkit']) {
   await page.getByRole('button',{name:'Resume saved Rosary'}).click(); await page.getByRole('heading',{name:'Apostles’ Creed',exact:true}).waitFor();
   await page.getByLabel(/^Voice/).selectOption('female');
   assert.match(await page.locator('audio').getAttribute('src'),/female/);
+  for (const speed of ['1','1.25','2']) {
+    await page.getByLabel(/^Speed/).selectOption(speed);
+    await page.waitForFunction(value => document.querySelector('audio')?.playbackRate === Number(value), speed);
+  }
   await page.getByRole('button',{name:'Play narration'}).click();
   await page.waitForFunction(()=> { const a=document.querySelector('audio'); return a && !a.paused && a.currentTime>0; });
   await page.getByRole('button',{name:'Pause narration'}).click();
@@ -36,6 +40,7 @@ for (const engine of ['chromium','webkit']) {
   await page.getByRole('button',{name:'Play narration'}).click();
   await page.locator('audio').evaluate(a=>a.dispatchEvent(new Event('ended')));
   await page.getByRole('heading',{name:'Our Father',exact:true}).waitFor();
+  assert.equal(await page.getByLabel(/^Speed/).inputValue(),'2');
   await page.getByRole('button',{name:'Save & exit'}).click();
   await page.getByRole('link',{name:'Divine Mercy',exact:false}).click();
   await page.getByRole('button',{name:'Start Chaplet'}).click();

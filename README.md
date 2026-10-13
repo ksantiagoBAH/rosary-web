@@ -23,9 +23,9 @@ npm run build
 
 - Today's mystery recommendation, preserving the original simplified seasonal convention.
 - All four mystery sets, twenty reflections, twelve traditional prayers, and the full Divine Mercy Chaplet.
-- Guided narration or manual reading; male and female AI-generated recordings with synchronized phrase highlighting, playback speed, replay, seeking, and text-size controls.
+- Guided narration or manual reading; male and female AI-generated recordings with synchronized phrase highlighting, playback speeds of 0.85×, 1×, 1.15×, 1.25×, and 2×, replay, seeking, and text-size controls.
 - Optional Fatima Prayer and optional Chaplet opening and closing prayers.
-- Locally saved separate Rosary and Chaplet sessions, voice preference, and reading size.
+- Locally saved separate Rosary and Chaplet sessions, voice preference, playback speed, and reading size.
 - All original prayer artwork and silent videos. Videos respect Reduce Motion, can be paused separately, pause while the page is hidden, and fall back to artwork on errors.
 - A desktop sidebar and wide meditation workspace, with stacked media and reader panels on phones. All controls support keyboard navigation.
 - Hash-based screen navigation works under GitHub Pages without server routing.
