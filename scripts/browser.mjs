@@ -10,8 +10,9 @@ for (const engine of ['chromium','webkit']) {
   const context=await browser.newContext({viewport:{width,height:960},reducedMotion:'reduce'});
   const page=await context.newPage(); const errors=[];
   page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(base); await page.getByRole('heading',{name:'A moment of stillness.'}).waitFor();
+  await page.goto(base); await page.getByRole('heading',{name:'A moment of peace.'}).waitFor();
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`${engine} ${width} today overflow`);
+  assert.equal(await page.locator('.hero-image').evaluate(e=>getComputedStyle(e).objectFit),'contain');
   await page.screenshot({path:`output/${engine}-${width}-today.png`,fullPage:true});
   const axe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
   assert.deepEqual(axe.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[],`${engine} ${width} accessibility`);
