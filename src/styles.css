@@ -52,3 +52,15 @@
 @media(min-width:1700px){
   .meditation-grid{grid-template-columns:minmax(0,1fr) 240px}
 }
+
+/* Divine Mercy opens with the same large video and content below. */
+@media(min-width:601px){
+  .chaplet-setup{grid-template-columns:1fr;gap:24px}
+  .chaplet-setup .sacred-media video,.chaplet-setup .sacred-media img{width:100%;height:clamp(360px,58dvh,720px);object-fit:contain}
+  .chaplet-setup .setup-panel{width:100%;max-width:900px;justify-self:center}
+}
+@media(min-width:601px) and (max-width:850px){
+  .meditation-grid{grid-template-columns:1fr}
+  .meditation-grid .visual-panel,.meditation-grid .reading-panel,.meditation-grid .contents{grid-column:1}
+  .visual-panel .sacred-media video,.visual-panel .sacred-media img{width:100%;height:clamp(320px,52dvh,560px);object-fit:contain}
+}

@@ -43,7 +43,10 @@ for (const engine of ['chromium','webkit']) {
   assert.equal(await page.getByLabel(/^Speed/).inputValue(),'2');
   await page.getByRole('button',{name:'Save & exit'}).click();
   await page.getByRole('link',{name:'Divine Mercy',exact:false}).click();
+  if(width>600){ const video=await page.locator('.chaplet-setup video').boundingBox(); const options=await page.locator('.chaplet-setup .setup-panel').boundingBox(); assert.ok(options.y>=video.y+video.height, 'Chaplet setup text under video'); }
   await page.getByRole('button',{name:'Start Chaplet'}).click();
+  if(width>600){ const video=await page.locator('.visual-panel video').boundingBox(); const text=await page.locator('.reading-panel').boundingBox(); assert.ok(text.y>=video.y+video.height, 'Chaplet prayer text under video'); }
+  for(const speed of ['1','1.25','2']){ await page.getByLabel(/^Speed/).selectOption(speed); await page.waitForFunction(value=>document.querySelector('audio')?.playbackRate===Number(value), speed); }
   await page.getByRole('button',{name:'Next prayer',exact:true}).click(); await page.getByRole('heading',{name:'You expired, Jesus',exact:true}).waitFor();
   await page.getByRole('button',{name:'Save & exit'}).click();
   await page.getByRole('link',{name:'Mysteries',exact:true}).click();
